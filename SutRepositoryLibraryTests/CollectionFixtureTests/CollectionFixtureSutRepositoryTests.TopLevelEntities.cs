@@ -1,34 +1,42 @@
 ﻿using SutLibrary.Entities;
+using SutRepositoryLibraryTests.FixtureTests;
 
-namespace SutRepositoryLibraryTests.SharedTests
+namespace SutRepositoryLibraryTests.CollectionFixtureTests
 {
-    public partial class SharedSutRepositoryTests
+    public partial class CollectionFixtureSutRepositoryTests
     {
-        public class SharedTopLevelEntitiesTests
+        public class CollectionFixtureEntitiesTests
         {
-            public class SharedTopLevelEntitiesTestBase : SharedSutRepositoryTestBase 
+            public class CollectionFixtureEntitiesTestBase : CollectionFixtureSutRepositoryTestBase 
             {
-                public SharedTopLevelEntitiesTestBase() { }
+                public CollectionFixtureEntitiesTestBase(DataContextCollectionFixture fixture) : base(fixture)
+                {
+                }
             }
 
-            public class AddEntityAsyncMethod : SharedTopLevelEntitiesTestBase
+            [Collection("Database collection")]
+            public class AddEntityAsyncMethod : CollectionFixtureEntitiesTestBase
             {
                 public int Result;
+
+                public AddEntityAsyncMethod(DataContextCollectionFixture fixture) : base(fixture) { }
 
                 [Fact]
                 public async void ShouldReturnResult()
                 {
                     Result = await Repository.AddEntityAsync(TopLevelEntity1);
 
-                    // Adding the tenant adds the TenantView record, the TenantApplication record, the AppStatus record and the TenantBilling record
                     Assert.Equal(1, Result);
                     Assert.Equal(RecordId1, TopLevelEntity1.Id);
                 }
             }
 
-            public class GetEntitiesAsyncMethod : SharedTopLevelEntitiesTestBase
+            [Collection("Database collection")]
+            public class GetEntitiesAsyncMethod : CollectionFixtureEntitiesTestBase
             {
                 public List<TopLevelEntity> Result;
+
+                public GetEntitiesAsyncMethod(DataContextCollectionFixture fixture) : base(fixture) { }
 
                 [Fact]
                 public async void ShouldReturnResult()
@@ -48,9 +56,12 @@ namespace SutRepositoryLibraryTests.SharedTests
                 }
             }
 
-            public class GetEntityAsyncMethod : SharedTopLevelEntitiesTestBase
+            [Collection("Database collection")]
+            public class GetEntityAsyncMethod : CollectionFixtureEntitiesTestBase
             {
                 public TopLevelEntity Result;
+
+                public GetEntityAsyncMethod(DataContextCollectionFixture fixture) : base(fixture) { }
 
                 [Fact]
                 public async void ShouldReturnResult()
@@ -68,9 +79,12 @@ namespace SutRepositoryLibraryTests.SharedTests
                 }
             }
 
-            public class UpdateEntityAsyncMethod : SharedTopLevelEntitiesTestBase
+            [Collection("Database collection")]
+            public class UpdateEntityAsyncMethod : CollectionFixtureEntitiesTestBase
             {
                 public int Result;
+
+                public UpdateEntityAsyncMethod(DataContextCollectionFixture fixture) : base(fixture) { }
 
                 [Fact]
                 public async void ShouldReturnResult()

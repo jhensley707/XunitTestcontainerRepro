@@ -1,7 +1,6 @@
 ﻿using SutLibrary.Entities;
-using SutRepositoryLibraryTests.FixtureTests;
 
-namespace SutRepositoryLibraryTests
+namespace SutRepositoryLibraryTests.FixtureTests
 {
     public partial class FixtureSutRepositoryTests
     {

@@ -1,5 +1,3 @@
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -8,7 +6,7 @@ using SutLibrary.Data;
 using SutLibrary.Entities;
 using SutLibrary.Services;
 
-namespace SutRepositoryLibraryTests
+namespace SutRepositoryLibraryTests.SharedTests
 {
     public partial class SharedSutRepositoryTests
     {

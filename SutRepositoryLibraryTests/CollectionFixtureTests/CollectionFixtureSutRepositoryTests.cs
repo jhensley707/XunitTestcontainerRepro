@@ -4,11 +4,11 @@ using SutLibrary.Data;
 using SutLibrary.Entities;
 using SutLibrary.Services;
 
-namespace SutRepositoryLibraryTests.FixtureTests
+namespace SutRepositoryLibraryTests.CollectionFixtureTests
 {
-    public partial class FixtureSutRepositoryTests
+    public partial class CollectionFixtureSutRepositoryTests
     {
-        public class FixtureSutRepositoryTestBase : IClassFixture<DataContextFixture>
+        public class CollectionFixtureSutRepositoryTestBase : IClassFixture<DataContextCollectionFixture>
         {
             public const string Code1 = "Code1";
             public const string Code2 = "Code2";
@@ -25,12 +25,12 @@ namespace SutRepositoryLibraryTests.FixtureTests
             public ComplexEntity ComplexEntity1;
             public TopLevelEntity TopLevelEntity1;
 
-            public DataContextFixture Fixture { get; set; }
+            public DataContextCollectionFixture Fixture { get; set; }
             public SutDbContext Context;
             public readonly Mock<ILogger<ISutRepository>> MockLogger;
             public SutRepository Repository;
 
-            public FixtureSutRepositoryTestBase(DataContextFixture fixture)
+            public CollectionFixtureSutRepositoryTestBase(DataContextCollectionFixture fixture)
             {
                 Fixture = fixture;
                 Context = fixture.Context;

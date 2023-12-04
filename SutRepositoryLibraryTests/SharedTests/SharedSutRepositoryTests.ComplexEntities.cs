@@ -1,6 +1,6 @@
 ﻿using SutLibrary.Entities;
 
-namespace SutRepositoryLibraryTests
+namespace SutRepositoryLibraryTests.SharedTests
 {
     public partial class SharedSutRepositoryTests
     {

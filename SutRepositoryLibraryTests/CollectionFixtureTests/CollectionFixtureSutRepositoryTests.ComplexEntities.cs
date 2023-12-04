@@ -1,21 +1,22 @@
 ﻿using SutLibrary.Entities;
 
-namespace SutRepositoryLibraryTests.FixtureTests
+namespace SutRepositoryLibraryTests.CollectionFixtureTests
 {
-    public partial class FixtureSutRepositoryTests
+    public partial class CollectionFixtureSutRepositoryTests
     {
-        public class FixtureComplexEntitiesTests
+        public class CollectionFixtureComplexEntitiesTests
         {
-            public class FixtureComplexEntitiesTestBase : FixtureSutRepositoryTestBase 
+            public class CollectionFixtureComplexEntitiesTestBase : CollectionFixtureSutRepositoryTestBase 
             {
-                public FixtureComplexEntitiesTestBase(DataContextFixture fixture) : base(fixture) { }
+                public CollectionFixtureComplexEntitiesTestBase(DataContextCollectionFixture fixture) : base(fixture) { }
             }
 
-            public class AddComplexEntityAsyncMethod : FixtureComplexEntitiesTestBase
+            [Collection("Database collection")]
+            public class AddComplexEntityAsyncMethod : CollectionFixtureComplexEntitiesTestBase
             {
                 public int Result;
 
-                public AddComplexEntityAsyncMethod(DataContextFixture fixture) : base(fixture) { }
+                public AddComplexEntityAsyncMethod(DataContextCollectionFixture fixture) : base(fixture) { }
 
                 [Fact]
                 public async void ShouldReturnResult()
@@ -26,11 +27,12 @@ namespace SutRepositoryLibraryTests.FixtureTests
                 }
             }
 
-            public class GetComplexEntitiesAsyncMethod : FixtureComplexEntitiesTestBase
+            [Collection("Database collection")]
+            public class GetComplexEntitiesAsyncMethod : CollectionFixtureComplexEntitiesTestBase
             {
                 public List<ComplexEntity> Result;
 
-                public GetComplexEntitiesAsyncMethod(DataContextFixture fixture) : base(fixture) { }
+                public GetComplexEntitiesAsyncMethod(DataContextCollectionFixture fixture) : base(fixture) { }
 
                 [Fact]
                 public async void ShouldReturnResult()
@@ -51,11 +53,12 @@ namespace SutRepositoryLibraryTests.FixtureTests
                 }
             }
 
-            public class GetComplexEntityAsyncMethod : FixtureComplexEntitiesTestBase
+            [Collection("Database collection")]
+            public class GetComplexEntityAsyncMethod : CollectionFixtureComplexEntitiesTestBase
             {
                 public ComplexEntity Result;
 
-                public GetComplexEntityAsyncMethod(DataContextFixture fixture) : base(fixture) { }
+                public GetComplexEntityAsyncMethod(DataContextCollectionFixture fixture) : base(fixture) { }
 
                 [Fact]
                 public async void ShouldReturnResult()
@@ -74,11 +77,12 @@ namespace SutRepositoryLibraryTests.FixtureTests
                 }
             }
 
-            public class UpdateConplexEntityAsyncMethod : FixtureComplexEntitiesTestBase
+            [Collection("Database collection")]
+            public class UpdateConplexEntityAsyncMethod : CollectionFixtureComplexEntitiesTestBase
             {
                 public int Result;
 
-                public UpdateConplexEntityAsyncMethod(DataContextFixture fixture) : base(fixture) { }
+                public UpdateConplexEntityAsyncMethod(DataContextCollectionFixture fixture) : base(fixture) { }
 
                 [Fact]
                 public async void ShouldReturnResult()
