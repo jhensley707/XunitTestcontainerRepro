@@ -1,4 +1,5 @@
-﻿using SutLibrary.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SutLibrary.Entities;
 
 namespace SutRepositoryLibraryTests.CollectionFixtureTests
 {
@@ -8,10 +9,21 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
         {
             public class CollectionFixtureComplexEntitiesTestBase : CollectionFixtureSutRepositoryTestBase 
             {
-                public CollectionFixtureComplexEntitiesTestBase(DataContextCollectionFixture fixture) : base(fixture) { }
+                public ComplexEntity ComplexEntity2;
+
+                public CollectionFixtureComplexEntitiesTestBase(DataContextCollectionFixture fixture) : base(fixture)
+                {
+                    ComplexEntity2 = new ComplexEntity
+                    {
+                        Code = Code1,
+                        Name = Name2,
+                        Language = Language1,
+                        Version = Version12,
+                    };
+                }
             }
 
-            [Collection("Database collection")]
+            [Collection(nameof(DatabaseCollection))]
             public class AddComplexEntityAsyncMethod : CollectionFixtureComplexEntitiesTestBase
             {
                 public int Result;
@@ -21,13 +33,14 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 [Fact]
                 public async void ShouldReturnResult()
                 {
-                    Result = await Repository.AddComplexEntityAsync(ComplexEntity1);
+                    
+                    Result = await Repository.AddComplexEntityAsync(ComplexEntity2);
 
                     Assert.Equal(1, Result);
                 }
             }
 
-            [Collection("Database collection")]
+            [Collection(nameof(DatabaseCollection))]
             public class GetComplexEntitiesAsyncMethod : CollectionFixtureComplexEntitiesTestBase
             {
                 public List<ComplexEntity> Result;
@@ -38,14 +51,14 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 public async void ShouldReturnResult()
                 {
                     // This unit test should be the only time the Context DbSet is accessed directly
-                    Context.ComplexEntities.Add(ComplexEntity1);
-                    await Context.SaveChangesAsync();
+                    //Context.ComplexEntities.Add(ComplexEntity1);
+                    //await Context.SaveChangesAsync();
 
                     Result = await Repository.GetComplexEntitiesAsync();
 
                     Assert.NotNull(Result);
                     Assert.NotEmpty(Result);
-                    Assert.Single(Result);
+                    Assert.True(Result.Count > 0);
                     Assert.Equal(Name1, Result[0].Name);
                     Assert.Equal(Code1, Result[0].Code);
                     Assert.Equal(Language1, Result[0].Language);
@@ -53,7 +66,7 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 }
             }
 
-            [Collection("Database collection")]
+            [Collection(nameof(DatabaseCollection))]
             public class GetComplexEntityAsyncMethod : CollectionFixtureComplexEntitiesTestBase
             {
                 public ComplexEntity Result;
@@ -64,8 +77,8 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 public async void ShouldReturnResult()
                 {
                     // This unit test should be the only time the Context DbSet is accessed directly
-                    Context.ComplexEntities.Add(ComplexEntity1);
-                    await Context.SaveChangesAsync();
+                    //Context.ComplexEntities.Add(ComplexEntity1);
+                    //await Context.SaveChangesAsync();
 
                     Result = await Repository.GetComplexEntityAsync(Name1, Code1, Language1, Version12);
 
@@ -77,7 +90,7 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 }
             }
 
-            [Collection("Database collection")]
+            [Collection(nameof(DatabaseCollection))]
             public class UpdateConplexEntityAsyncMethod : CollectionFixtureComplexEntitiesTestBase
             {
                 public int Result;
@@ -88,12 +101,15 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 public async void ShouldReturnResult()
                 {
                     // This unit test should be the only time the Context DbSet is accessed directly
-                    Context.ComplexEntities.Add(ComplexEntity1);
-                    await Context.SaveChangesAsync();
+                    ComplexEntity2 = await Context.ComplexEntities.FirstOrDefaultAsync(ce =>
+                        ce.Name == Name1 &&
+                        ce.Code == Code1 &&
+                        ce.Language == Language1 &&
+                        ce.Version == Version12);
 
-                    ComplexEntity1.Value = Value1;
+                    ComplexEntity2.Value = Value1;
 
-                    Result = await Repository.UpdateComplexEntityAsync(ComplexEntity1);
+                    Result = await Repository.UpdateComplexEntityAsync(ComplexEntity2);
 
                     Assert.Equal(1, Result);
                 }

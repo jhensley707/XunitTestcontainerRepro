@@ -8,23 +8,8 @@ namespace SutRepositoryLibraryTests.FixtureTests
 {
     public partial class FixtureSutRepositoryTests
     {
-        public class FixtureSutRepositoryTestBase : IClassFixture<DataContextFixture>
+        public class FixtureSutRepositoryTestBase : CommonTestBase, IClassFixture<DataContextFixture>
         {
-            public const string Code1 = "Code1";
-            public const string Code2 = "Code2";
-            public const int EntityId42 = 42;
-            public const int EntityId43 = 43;
-            public const string Language1 = "Language1";
-            public const string Name1 = "Name1";
-            public const string Name2 = "Name2";
-            public const string Name3 = "Name3";
-            public const int RecordId1 = 1;
-            public const string Value1 = "Value1";
-            public const int Version12 = 12;
-
-            public ComplexEntity ComplexEntity1;
-            public TopLevelEntity TopLevelEntity1;
-
             public DataContextFixture Fixture { get; set; }
             public SutDbContext Context;
             public readonly Mock<ILogger<ISutRepository>> MockLogger;

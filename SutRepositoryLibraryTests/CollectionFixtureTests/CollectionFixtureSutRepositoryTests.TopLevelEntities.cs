@@ -1,5 +1,6 @@
 ﻿using SutLibrary.Entities;
 using SutRepositoryLibraryTests.FixtureTests;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SutRepositoryLibraryTests.CollectionFixtureTests
 {
@@ -9,12 +10,18 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
         {
             public class CollectionFixtureEntitiesTestBase : CollectionFixtureSutRepositoryTestBase 
             {
+                public TopLevelEntity TopLevelEntity2;
+                
                 public CollectionFixtureEntitiesTestBase(DataContextCollectionFixture fixture) : base(fixture)
                 {
+                    TopLevelEntity2 = new TopLevelEntity
+                    {
+                        Name = Name2,
+                    };
                 }
             }
 
-            [Collection("Database collection")]
+            [Collection(nameof(DatabaseCollection))]
             public class AddEntityAsyncMethod : CollectionFixtureEntitiesTestBase
             {
                 public int Result;
@@ -24,14 +31,14 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 [Fact]
                 public async void ShouldReturnResult()
                 {
-                    Result = await Repository.AddEntityAsync(TopLevelEntity1);
+                    Result = await Repository.AddEntityAsync(TopLevelEntity2);
 
                     Assert.Equal(1, Result);
-                    Assert.Equal(RecordId1, TopLevelEntity1.Id);
+                    Assert.Equal(RecordId2, TopLevelEntity2.Id);
                 }
             }
 
-            [Collection("Database collection")]
+            [Collection(nameof(DatabaseCollection))]
             public class GetEntitiesAsyncMethod : CollectionFixtureEntitiesTestBase
             {
                 public List<TopLevelEntity> Result;
@@ -41,22 +48,16 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 [Fact]
                 public async void ShouldReturnResult()
                 {
-                    TopLevelEntity1.Id = EntityId42;
-
-                    // This unit test should be the only time the Context DbSet is accessed directly
-                    Context.TopLevelEntities.Add(TopLevelEntity1);
-                    await Context.SaveChangesAsync();
-
                     Result = await Repository.GetEntitiesAsync();
 
                     Assert.NotNull(Result);
                     Assert.NotEmpty(Result);
-                    Assert.Single(Result);
-                    Assert.Equal(EntityId42, Result[0].Id);
+                    Assert.True(Result.Count > 0);
+                    Assert.Equal(RecordId1, Result[0].Id);
                 }
             }
 
-            [Collection("Database collection")]
+            [Collection(nameof(DatabaseCollection))]
             public class GetEntityAsyncMethod : CollectionFixtureEntitiesTestBase
             {
                 public TopLevelEntity Result;
@@ -66,20 +67,14 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 [Fact]
                 public async void ShouldReturnResult()
                 {
-                    TopLevelEntity1.Id = EntityId42;
-
-                    // This unit test should be the only time the Context DbSet is accessed directly
-                    Context.TopLevelEntities.Add(TopLevelEntity1);
-                    await Context.SaveChangesAsync();
-
-                    Result = await Repository.GetEntityAsync(EntityId42);
+                    Result = await Repository.GetEntityAsync(RecordId1);
 
                     Assert.NotNull(Result);
-                    Assert.Equal(EntityId42, Result.Id);
+                    Assert.Equal(RecordId1, Result.Id);
                 }
             }
 
-            [Collection("Database collection")]
+            [Collection(nameof(DatabaseCollection))]
             public class UpdateEntityAsyncMethod : CollectionFixtureEntitiesTestBase
             {
                 public int Result;
@@ -89,10 +84,6 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 [Fact]
                 public async void ShouldReturnResult()
                 {
-                    // This unit test should be the only time the Context DbSet is accessed directly
-                    Context.TopLevelEntities.Add(TopLevelEntity1);
-                    await Context.SaveChangesAsync();
-
                     TopLevelEntity1.Name = Name2;
 
                     Result = await Repository.UpdateEntityAsync(TopLevelEntity1);

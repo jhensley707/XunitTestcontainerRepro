@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using SutLibrary.Data;
+using SutLibrary.Entities;
 
 namespace SutRepositoryLibraryTests.CollectionFixtureTests
 {
@@ -11,7 +12,7 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
     /// Spinning up a separate container for each test resulted in several 'System.TimeoutException : The operation has timed out.'
     /// errors from DockerContainer.StartAsync(CancellationToken ct) in the InitializeAsync() method.</para>
     /// </summary>
-    public sealed class DataContextCollectionFixture : IAsyncLifetime
+    public sealed class DataContextCollectionFixture : CommonTestBase, IAsyncLifetime
     {
         /// <summary>
         /// The PostgreSql database container for the Provider database context
@@ -26,14 +27,6 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
         private DbContextOptions<SutDbContext> _dbContextOptions;
 
         public SutDbContext Context { get; private set; }
-
-        [CollectionDefinition("Database collection")]
-        public class DatabaseCollection : ICollectionFixture<DataContextCollectionFixture>
-        {
-            // This class has no code, and is never created. Its purpose is simply
-            // to be the place to apply [CollectionDefinition] and all the
-            // ICollectionFixture<> interfaces.
-        }
 
         public Task DisposeAsync()
         {
@@ -63,6 +56,11 @@ namespace SutRepositoryLibraryTests.CollectionFixtureTests
                 connection.Open();
             }
             connection.ReloadTypes();
+
+            // This unit test should be the only time the Context DbSet is accessed directly
+            Context.TopLevelEntities.Add(TopLevelEntity1);
+            Context.ComplexEntities.Add(ComplexEntity1);
+            await Context.SaveChangesAsync();
         }
     }
 }
